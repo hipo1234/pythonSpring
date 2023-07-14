@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/default_layout}">
+<th:block layout:fragment="css">
+    <link rel="stylesheet" th:href="@{css/style.css}">
+</th:block>
+<th:block layout:fragment="script">
+    <script th:src="@{js/myjs.js}"></script>
+</th:block>
+
+<th:block layout:fragment="content">
+    <h1>Index</h1>
+    <label for="mycheck">이거누르면</label>
+    <input type="checkbox" id="mycheck">
+</th:block>
+
+
+.myDiv{
+    background-color : blue;
+    width:100px;
+
+
+
+
+
+
+
+
+
+
+
+
+</html>
