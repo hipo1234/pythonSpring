@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>Book Recommendations</title>
+</head>
+
+<body>
+   <h1>Recommended Books</h1>
+
+   {% for book in books %}
+      <div class="book">
+         <h2>{{ book.title }}</h2>
+         <p>{{ book.intro }}</p>
+      </div>
+   {% endfor %}
+</body>
+
+</html>
