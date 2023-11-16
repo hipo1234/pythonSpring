@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <title>애니메이션-상품 매칭 서비스</title>
+
+    <!--    <script src="css/js/main.css"></script>-->
+
+    <!--    <link rel="stylesheet" href="/css/main.css">-->
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap JS (Optional, if you want to use dropdown functionality) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+
+    <style>
+        body {
+            background-color: #E3FFDD;
+            margin: 0;
+        }
+
+        /*
+        body > not(.wrapper){
+           background-color: #E3FFDD;
+        }
+*/
+        .wrapper {
+            padding: 20px;
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            justify-content: space-between;
+        }
+
+        .wrapper>div {
+            border: 1px solid #000;
+            box-sizing: border-box;
+        }
+
+        .wrapper>div:last-child {
+            border-right: 1px;
+        }
+
+        .choose {
+            margin-bottom: 20px;
+            flex-grow: 1;
+            flex: 0.125;
+            background-color: #ffffff;
+            max-width: 220px;
+            display: flex;
+            flex-direction: column;
+
+        }
+
+        .image-up {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+
+        }
+
+        .btn-container {
+            display: flex;
+            flex-direction: row;
+            margin-left: auto;
+            margin-right: auto;
+            gap: 10px;
+            margin-top: auto;
+            justify-content: center;
+
+        }
+
+
+        .btn-secondary {
+            background-color: #E3FFDD !important;
+            color: #000000 !important;
+            border: none;
+        }
+
+        .maincon {
+            background-color: #E6E2FF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+            width: 700px;
+            height: 700px;
+        }
+
+        .image-upload-section,
+        .image-generated-section {
+            flex: 1;
+            margin: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 320px;
+            width: 320px;
+        }
+
+        .gallery {
+            margin-bottom: 20px;
+            flex-grow: 1;
+            flex: 0.125;
+            background-color: #ffffff;
+            max-width: 220px;
+            max-height: 880px;
+        }
+
+        .gallery img {
+            width: 200px;
+            height: 200px;
+
+        }
+
+        .header,
+        footer {
+            text-align: center;
+            background-color: #FFFFFF;
+            border: 2px solid #000000;
+            margin-right: 10px;
+            margin-left: 10px;
+            background-image: url('static/sample/pororoOper35.png');
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: bold;
+            font-size: 40px;
+        }
+
+        .image-upload-section h2 {
+            font-size: 30px;
+            height: 50px;
+            width: 220px;
+            margin-bottom: 30px;
+            text-align: center;
+
+        }
+
+        .image-generated-section h2 {
+            font-size: 30px;
+            height: 50px;
+            width: 220px;
+            margin-bottom: 50px;
+            text-align: center;
+            justify-content: center;
+
+        }
+
+        label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #E6E2FF;
+            margin-right: 10px;
+            margin-left: 10px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #808080;
+
+
+        }
+
+        #uploadImage,
+        #deleteImage {
+            background-color: #9370db;
+
+        }
+
+        #categoryBtn {
+            display: inline-block;
+            width: 220px;
+            height: 50px;
+            background-image: url('static/sample/food.png');
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            border: none;
+            font-size: 20px;
+        }
+
+        .dropdown-btn {
+            display: inline-block;
+            height: 50px;
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center;
+            overflow: hidden;
+            border: none;
+            font-size: 20px;
+            max-width: 220px;
+            opacity: 1;
+        }
+
+        .dropdown-btn:hover {
+            opacity: 0.5;
+        }
+
+        #deleteImage {
+            background-color: #F0F0F0;
+        }
+
+        #categoryDropdown .dropdown-btn {
+            background-image: url('static/sample/food.png');
+            font-weight: bold;
+            font-size: 20px;
+            max-width: 220px;
+        }
+
+        #themeDropdown .dropdown-btn {
+            background-image: url('static/sample/mood.png');
+            font-weight: bold;
+            font-size: 20px;
+            width: 100%;
+            max-width: 220px;
+        }
+
+        #personalityDropdown .dropdown-btn {
+            background-image: url('static/sample/personal.png');
+            font-weight: bold;
+            width: 100%;
+            max-width: 220px;
+        }
+
+        #ageDropdown .dropdown-btn {
+            background-image: url('static/sample/age.png');
+            font-weight: bold;
+            width: 100%;
+            max-width: 220px;
+        }
+
+        .dropdown {
+            flex: 0.125;
+            font-weight: bold;
+            max-width: 220px;
+            margin: 20px 0;
+        }
+
+        .dropdown-menu {
+            width: 100%;
+            font-weight: bold;
+            max-width: 220px;
+        }
+
+        #checkRecommendedAnimation {
+            display: block;
+            margin-bottom: 30px;
+            margin-top: 20px;
+            margin: auto;
+            justify-content: center;
+            align-items: center;
+
+            width: 170px;
+            height: 50px;
+            border: 1px solid #808080;
+            background-color: #c4bdf2;
+            font-size: 20px;
+
+        }
+
+        .title1,
+        .title2 {
+            width: 220px;
+            height: 80px;
+
+        }
+
+        #generatedImageBtn {
+            margin-top: 20px;
+            border: 1px solid #808080;
+            background-color: #c4bdf2;
+
+        }
+
+        #uploadingImage {
+            margin-top: 20px;
+            border: 1px solid #808080;
+            background-color: #c4bdf2;
+        }
+
+        #deleteImage {
+            margin-top: 20px;
+            border: 1px solid #808080;
+            background-color: #c4bdf2;
+        }
+
+        .dropdown-menu img {
+            opacity: 0.5;
+        }
+
+        .team_name {
+            bottom: 40px;
+        }
+
+        .center {
+            text-align: center;
+        }
+    </style>
+
+    <script>
+
+    </script>
+
+
+</head>
+
+<body>
+    <!--헤더 부분-->
+    <header class="header">
+        <h1>상품 X 애니메이션 콜라보 추천 AI 시스템</h1>
+    </header>
+
+    <div class="wrapper">
+
+        <div class="choose">
+            <div class="sidebar">
+                <form method="POST" action="/process">
+                    <!--  상품 선택  -->
+                    <div id="categoryDropdown" class="dropdown flex-container">
+                        <button id="categoryBtn" class="btn btn-secondary dropdown-toggle dropdown-btn">
+                            식품
+                        </button>
+
+                        <select class="form-select" id="food-categorySelect" name="food">
+                            {% for food in productFood %}
+                            <option value="{{food}}">{{food}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- 테마(분위기 선택) -->
+                    <div id="themeDropdown" class="dropdown flex-container">
+                        <button class="btn btn-secondary dropdown-toggle dropdown-btn">
+                            테마1(분위기)
+                        </button>
+
+                        <select class="form-select" id="foodinfo-categorySelect" name="food_info">
+                            {% for food_info in productFoodInfo %}
+                            <option value="{{food_info}}">{{food_info}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- 테마(성격 선택) -->
+                    <div id="personalityDropdown" class="dropdown flex-container">
+                        <button class="btn btn-secondary dropdown-toggle dropdown-btn">
+                            테마2(키워드)
+                        </button>
+
+                        <select class="form-select" id="foodinfo2-categorySelect" name="food_info2">
+                            {% for food_info2 in productFoodInfo2 %}
+                            <option value="{{food_info2}}">{{food_info2}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <!-- 나이 선택 -->
+                    <div id="ageDropdown" class="dropdown flex-container">
+                        <button class="btn btn-secondary dropdown-toggle dropdown-btn">
+                            나이
+                        </button>
+
+                        <select class="form-select" id="age-categorySelect" name="age">
+                            {% for age in Age %}
+                            <option value="{{age}}">{{age}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="center">
+                        <input type="button" value="애니 추천" id="process" class="btn btn-primary m-3"
+                               style="width:150px; border-radius: 50px; color: #000000; background-color: #C4BDF2;">
+                    </div>
+                </form>
+                <div class="btn-container" style="border-radius: 20px">
+                    <input type="button" value="콜라보 생성" id="predict" class="btn btn-primary m-3"
+                           style="width:150px; border-radius: 50px; color: #000000; background-color: #C4BDF2;">
+                </div>
+            </div>
+            <div>
+                <div class="team_name">(주)Pororo</div>
+                <span>리우웨이나</span><br>
+                <span>박정연</span><br>
+                <span>김찬서</span>
+            </div>
+            <br>
+            <div>
+                <span>사업자번호:503-82-01234</span><br>
+                <span>contact@pororo.kr</span><br>
+                <span>개인정보처리방침</span><br>
+                <span>이용약관</span>
+            </div>
+
+        </div>
+
+        <div style="background-color: #E6E2FF;">
+            <div class="maincon">
+                <!--이미지 업로드 부분. 원하시는 이미지를 넣어주세요.-->
+                <div class="image-up">
+                    <div class="image-upload-section">
+                        <div class="title1">
+                            <h2>[이미지 업로드]</h2>
+                        </div>
+                        <label for="imageUpload" style="cursor: pointer">
+                            <img id="uploadImage" src="static/sample/upload.png" alt="Upload Image"
+                                style="width:300px; height:300px; border: 1px;">
+                        </label>
+                        <!--            <form method="POST" enctype="multipart/form-data">-->
+                        <input type="file" id="imageUpload" name="file" style="display: none;"
+                            onchange="displayImage(this)">
+
+                        <!--            </form>-->
+                        <div>
+                            <img id="img4" style="display:none; max-width:200px; border: 1px;">
+                        </div>
+                    </div>
+
+                    <div class="image-generated-section">
+                        <div>
+                            <div class="title2">
+                                <h2>[콜라보 업로드]</h2>
+                            </div>
+                            <label for="imageGenerate" style="cursor: pointer">
+                                <img id="img5" src="static/sample/upload.png" alt="Generated Image"
+                                    style="width:300px; height:300px; border: 1px;">
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-left:35%; margin-top:10px; height: 70px">
+                <div style="display:inline;">
+
+                </div>
+                <div class="generated-images" style="display:inline;">
+                    <input type="file" id="imageGenerate" name="file" style="display: none;"
+                        onchange="displayImage(this)">
+                </div>
+            </div>
+        </div>
+
+
+        <div style="background-color: #FFFFFF">
+            <div class="gallery">
+                <div class="priority-item">
+                    <label>1순위 : <span id="txt1">{{ recommend[0] }}</span></label>
+                    <img src="{{ url_for('static', filename='ch_image/' ~ recommend[0] ~ '.JPG') }}" alt="1순위" id="img1">
+
+
+                    <div class="priority-item">
+                        <div class="priority-item">
+                            <label>2순위 : <span id="txt2">{{ recommend[1] }}</span></label>
+                            <img src="{{ url_for('static', filename='ch_image/' ~ recommend[1] ~ '.JPG') }}" alt="2순위" id="img2">
+                        </div>
+                    </div>
+
+                    <div class="priority-item">
+                        <label>3순위 : <span id="txt3">{{ recommend[2] }}</span></label>
+                        <img src="{{ url_for('static', filename='ch_image/' ~ recommend[2] ~ '.JPG') }}" alt="3순위" id="img3">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <br>
+        <br>
+    </div>
+</body>
+<!-- 푸터 구역-->
+<footer>
+    <p>※ 해당 페이지에서 쓰인 사진들은 저작권 위배, 수익 창출 등의 목적으로 사용된 것이 아니며, 예시용으로 쓰임을 명시합니다.</p>
+</footer>
+
+</html>
+
+<script>
+    let gd = '';
+    let res0 = '';
+    let res1 = '';
+    let res2 = '';
+    let cnt = 0;
+
+    $('#food-categorySelect').click(function(){
+        let gd = $('#food-categorySelect').val();
+        $('#uploadImage').attr('src', `/static/gd_image/${gd}.JPG`);
+    });
+
+    $('#predict').click(function(){
+        console.log($('#food-categorySelect').val());
+        let gd = $('#food-categorySelect').val();
+        gd = gd ||'빵';
+
+        if (cnt%3==0)
+            $('#img5').attr('src', `/static/gd_ch_image/${gd}-${res0}.JPG`);
+        else if(cnt%3==1)
+            $('#img5').attr('src', `/static/gd_ch_image/${gd}-${res1}.JPG`);
+        else
+            $('#img5').attr('src', `/static/gd_ch_image/${gd}-${res2}.JPG`);
+        cnt++;
+    });
+
+    $('#process').click(function () {
+        var params = {
+            food: $("#food-categorySelect").val()
+            , foodinfo: $("#foodinfo-categorySelect").val()
+            , foodinfo2: $("#foodinfo2-categorySelect").val()
+            , age: $("#age-categorySelect").val()
+        }
+        // ajax 통신
+        $.ajax({
+            type: "POST",            // HTTP method type(GET, POST) 형식이다.
+            url: "/process",       // 컨트롤러에서 대기중인 URL 주소이다.
+            data: JSON.stringify(params),
+            contentType: 'application/json',
+            success: function (res) {  // 비동기통신의 성공일경우 success콜백으로 들어옵니다. 'res'는 응답받은 데이터이다.
+                console.log(res);
+                $('#txt1').html(res[0]);
+                $('#txt2').html(res[1]);
+                $('#txt3').html(res[2]);
+
+                res0 = res[0];
+                res1 = res[1];
+                res2 = res[2];
+
+                $('#img1').attr('src', `/static/ch_image/${res[0]}.JPG`);
+                $('#img2').attr('src', `/static/ch_image/${res[1]}.JPG`);
+                $('#img3').attr('src', `/static/ch_image/${res[2]}.JPG`);
+
+            },
+            error: function (XMLHttpRequest, textStatus, errorThrown) { // 비동기 통신이 실패할경우 error 콜백으로 들어옵니다.
+                console.log("통신 실패.")
+            }
+        });
+    });
+</script>
